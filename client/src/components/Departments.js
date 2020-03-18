@@ -4,7 +4,8 @@ import { Link, } from "react-router-dom"
 import axios from "axios"
 
 class Departments extends React.Component {
-  state = { departments: [], };
+  state = { departments: [],
+   };
 
   componentDidMount() {
     axios
@@ -12,7 +13,6 @@ class Departments extends React.Component {
       .then(res => {
         this.setState({ departments: res.data, })
       });
-      
   }
 
 
@@ -43,7 +43,7 @@ class Departments extends React.Component {
   }
 
   renderDepartments = () => {
-    const { departments, } = this.state;
+    const { departments } = this.state;
 
     if (departments.length <= 0)
       return <h2>No Departments</h2>
