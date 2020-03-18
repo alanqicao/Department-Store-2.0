@@ -12,6 +12,7 @@ class Departments extends React.Component {
       .then(res => {
         this.setState({ departments: res.data, })
       });
+      
   }
 
 
