@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Header, Button, } from "semantic-ui-react";
+import { Card, Header, Button, Checkbox } from "semantic-ui-react";
 import { Link, } from "react-router-dom"
 import axios from "axios"
 
@@ -20,14 +20,14 @@ class Departments extends React.Component {
     console.log(id)
 
     axios.put(`/api/departments/${id}`)
-      .then( res => {
-        const departments = this.state.departments.map( t => {
-        if (t.id === id)
-          return res.data;
-        return t;
-      });
-      this.setState({ departments, });
-    })
+      .then(res => {
+        const departments = this.state.departments.map(t => {
+          if (t.id === id)
+            return res.data;
+          return t;
+        });
+        this.setState({ departments, });
+      })
   }
 
   deleteDepartment = (id) => {
@@ -35,7 +35,7 @@ class Departments extends React.Component {
     console.log(id)
 
     axios.delete(`/api/departments/${id}`)
-      .then( res => {
+      .then(res => {
         const { departments, } = this.state;
         this.setState({ departments: departments.filter(d => d.id !== id), })
       })
@@ -55,22 +55,27 @@ class Departments extends React.Component {
           <Button as={Link} to={`/departments/${department.id}`} color='blue'>
             View
           </Button>
-          <Button 
-          
-          onClick={() => this.deleteDepartment(department.id)} 
-          color='blue'>
+          <Button
+
+            onClick={() => this.deleteDepartment(department.id)}
+            color='blue'>
             Delete
           </Button>
-          <Button 
-          
-          onClick={() => this.updateDepartments(department.id)} 
-          color='blue'>
-            Update
-          </Button>
+          <div style={styles.flex}>
+    
+          <Checkbox
+            defaultChecked={department.complete}
+            onClick={() => this.updateDepartments(department.id)}
+          />
+          <div style={department.complete ? styles.complete : {}} className="center">
+          </div>
+          </div>
         </Card.Content>
       </Card>
     ))
-  }
+  };
+
+ 
 
   render() {
     return (
@@ -89,6 +94,20 @@ class Departments extends React.Component {
     )
   }
 }
+
+const styles = {
+  complete: {
+    textDecoration: "line-through",
+    color: "grey",
+  },
+  pointer: {
+    cursor: "pointer",
+  },
+  flex: {
+    display: "flex",
+    alignItems: "center",
+  },
+};
 
 export default Departments;
 
