@@ -9,7 +9,7 @@ class Api::ItemsController < ApplicationController
     if item.save
       render json: item
     else
-      render json: { erros: item.errors }
+      render json: { errors: item.errors }
     end
   end
 

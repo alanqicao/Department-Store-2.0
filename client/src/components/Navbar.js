@@ -1,25 +1,32 @@
 import React from 'react';
 import { Link, } from 'react-router-dom';
 import { Menu, } from "semantic-ui-react";
+import styled from 'styled-components';
+import ItemStyle from './Menu'
+import Dog from './Menu'
+
+
+
 
 const Navbar = () => (
-  <Menu>
+  <Menu  >
     <Link to="/">
-      <Menu.Item>
+      <Dog mColor="happy">
         Home
-      </Menu.Item>
+      </Dog >
     </Link>
     <Link to="/about">
-      <Menu.Item>
+      <ItemStyle mColor="unhappy">
         About
-      </Menu.Item>
+      </ItemStyle>
     </Link>
     <Link to="/departments">
-      <Menu.Item>
+      <ItemStyle>
         Departments
-      </Menu.Item>
+      </ItemStyle>
     </Link>
-  </Menu>
+  </Menu >
 )
+
 
 export default Navbar;

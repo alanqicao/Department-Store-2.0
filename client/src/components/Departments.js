@@ -2,9 +2,12 @@ import React from "react";
 import { Card, Header, Button, Checkbox } from "semantic-ui-react";
 import { Link, } from "react-router-dom"
 import axios from "axios"
+import styled from 'styled-components';
+import StyledHeader from './StyledHeader'
 
 class Departments extends React.Component {
-  state = { departments: [], };
+  state = { departments: [],
+   };
 
   componentDidMount() {
     axios
@@ -12,7 +15,6 @@ class Departments extends React.Component {
       .then(res => {
         this.setState({ departments: res.data, })
       });
-      
   }
 
 
@@ -43,36 +45,31 @@ class Departments extends React.Component {
   }
 
   renderDepartments = () => {
-    const { departments, } = this.state;
+    const { departments } = this.state;
 
     if (departments.length <= 0)
       return <h2>No Departments</h2>
     return departments.map(department => (
-      <Card key = {`department-${department.id}`}>
+      <StyledCard key = {`department-${department.id}`}>
         <Card.Content>
           <Card.Header>{department.name}</Card.Header>
         </Card.Content>
-        <Card.Content extra>
-          <Button as={Link} to={`/departments/${department.id}`} color='blue'>
+        <Card.Content as='div' extra>
+          <StyledButton as={Link} to={`/departments/${department.id}`}>
             View
-          </Button>
-          <Button
-
-            onClick={() => this.deleteDepartment(department.id)}
-            color='blue'>
+          </StyledButton>
+          <StyledButton
+            onClick={() => this.deleteDepartment(department.id)}>
             Delete
-          </Button>
-          <div style={styles.flex}>
-    
-          <Checkbox
-            defaultChecked={department.complete}
-            onClick={() => this.updateDepartments(department.id)}
-          />
-          <div style={department.complete ? styles.complete : {}} className="center">
-          </div>
-          </div>
+          </StyledButton>
+          <CheckboxContainer>
+            <Checkbox
+              defaultChecked={department.complete}
+              onClick={() => this.updateDepartments(department.id)}
+            />
+          </CheckboxContainer>
         </Card.Content>
-      </Card>
+      </StyledCard>
     ))
   };
 
@@ -81,11 +78,11 @@ class Departments extends React.Component {
   render() {
     return (
       <div>
-        <Header as="h1">Departments</Header>
+        <StyledHeader as="h1">Departments</StyledHeader>
         <br />
-        <Button as={Link} color="blue" to="/departments/new">
+        <NewButton as={Link} to="/departments/new">
           Add Departments
-        </Button>
+        </NewButton>
         <br />
         <br />
         <Card.Group>
@@ -96,19 +93,43 @@ class Departments extends React.Component {
   }
 }
 
-const styles = {
-  complete: {
-    textDecoration: "line-through",
-    color: "grey",
-  },
-  pointer: {
-    cursor: "pointer",
-  },
-  flex: {
-    display: "flex",
-    alignItems: "center",
-  },
-};
+const CheckboxContainer = styled.div`
+  float: right;
+  margin: 15px;
+`
+
+const StyledCard = styled(Card)`
+  height: fit-content !important;
+  box-shadow: 2px 2px !important;
+  background-color: #ebeef0 !important;
+`
+const NewButton = styled(Button)`
+  border-radius: 10px;
+  color: grey;
+  padding: 5px 5px;
+  background-color: #bbe4fa;
+  width: fit-content;
+  box-shadow: 1px 1px;
+`
+
+const StyledButton = styled.div`
+  border-radius: 10px;
+  margin: 10px 30px;
+  color: grey;
+  padding: 5px 5px;
+  background-color: #bbe4fa;
+  width: fit-content;
+  float: right;
+  box-shadow: 1px 1px;
+
+  transition: background 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: white;
+    transition: background 0.2s ease;
+  }
+`
 
 export default Departments;
 
