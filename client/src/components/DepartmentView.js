@@ -3,13 +3,20 @@ import axios from "axios";
 import { Button, Header, Segment } from "semantic-ui-react";
 
 class DepartmentReview extends React.Component {
-  state = { department: {}, };
+  state = { department: {}, items: [] };
 
   componentDidMount() {
-    axios.get(`/api/departments/${this.props.match.params.id}`)
-      .then( res => {
-        this.setState({ department: res.data, });
+    const department_id = this.props.match.params.id;
+    axios.get(`/api/departments/${department_id}`)
+      .then(res => {
+        const departmentData = res.data
+        axios.get(`/api/departments/${department_id}/items`)
+          .then(res => {
+            this.setState({ department: departmentData, items: res.data });
+
+          })
       })
+
   }
 
 
@@ -19,12 +26,21 @@ class DepartmentReview extends React.Component {
     return (
       <div>
         <Segment>
-          <Header as="h1">{ name }</Header>
+          <Header as="h1">{name}</Header>
+        </Segment>
+        <Segment>
+          <Header as="h1">Comments 1st example</Header>
+          {this.state.items.map(item => (
+            <Segment>
+              <Header as="h3">{item.user}</Header>
+              <p>{item.text}</p>
+            </Segment>
+          ))}
         </Segment>
         <br />
         <br />
-        <Button 
-          color="black" 
+        <Button
+          color="black"
           onClick={this.props.history.goBack}
         >
           Back

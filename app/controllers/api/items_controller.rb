@@ -1,16 +1,15 @@
 class Api::ItemsController < ApplicationController
-  before_action : set_department
   before_action :set_item, only: [:show, :update, :destroy]
+
+  def index
+    department = Department.find(params[:dependent_id])
+    render json: department.items
+  end
 
 
   def create
     department = Department.find(params[:department_id])
-    item = department.items.new(item_params)
-    if item.save
-      render json: item
-    else
-      render json: { errors: item.errors }
-    end
+    render json: department.items.create(item_params)
   end
 
 
@@ -38,9 +37,7 @@ class Api::ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
-  def set_department
-    params.require(:dependent).permit(:name, :complete)
-  end
+ 
 
 
 end
